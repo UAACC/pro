@@ -74,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
+AUTH_USER_MODEL = "user.User"
 
 
 # Database
