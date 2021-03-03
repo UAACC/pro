@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer
 from .models import Author, Post
 from django.http import HttpResponse
+from rest_framework.generics import(UpdateAPIView, DestroyAPIView)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -41,6 +42,17 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
+
+class UpdateViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (AllowAny, )
+
+class DeleteViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (AllowAny, )
+
 
 # def send_friend_request(request, userID):
 #     from_user = request.user

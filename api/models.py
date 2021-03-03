@@ -16,6 +16,7 @@ class Post(models.Model):
     description = models.CharField(max_length=256, default="")
     authorId = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
     published = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(null = True, blank = True, upload_to= "images/")
 
 
 class Comment(models.Model):
