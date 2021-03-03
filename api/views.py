@@ -2,12 +2,12 @@ from rest_framework import viewsets, status,generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny,IsAdminUser,IsAuthenticatedOrReadOnly#update/retrive
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer
+from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer
 from .models import Author, Post
 from django.http import HttpResponse
-
+from .permissions import IsOwnerOrReadOnly
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -39,10 +39,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
-class PostViewSet(viewsets.ModelViewSet):
+class PostList(generics.ListAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
+
+class PostCreate(generics.CreateAPIView):
+    queryset = Post.postobjects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def create_view(self, serializer):
+        serializer.save(authorId = self.request.user)
 
 class PostDetail(generics.RetrieveAPIView):
     queryset = Post.postobjects.all()
@@ -52,7 +60,15 @@ class PostDetail(generics.RetrieveAPIView):
 class UpdatePost(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.postobjects.all()
     serializer_class = UpdateSerializer
+    
+    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+
+
+class DeletePost(generics.DestroyAPIView):
+    queryset = Post.postobjects.all()
+    serializer_class = PostSerializer
     permission_classes = (AllowAny, )
+    
     
 
     

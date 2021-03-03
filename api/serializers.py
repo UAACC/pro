@@ -42,6 +42,15 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
 
     
+class PostCreateSerializer(serializers.ModelSerializer):
+
+    comments = CommentSerializer(many=True, required=False)
+    likes = LikeSerializer(many=True, required=False)
+
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
+
 
 class UpdateSerializer(serializers.ModelSerializer):
 
