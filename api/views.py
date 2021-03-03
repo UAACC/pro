@@ -1,13 +1,14 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status,generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer
+from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer
 from .models import Author, Post
 from django.http import HttpResponse
-from rest_framework.generics import(UpdateAPIView, DestroyAPIView)
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -27,31 +28,34 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return Response(author, status=status.HTTP_200_OK)
 
 class LikeViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.postobjects.all()
     serializer_class = LikeSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.postobjects.all()
     serializer_class = CommentSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.postobjects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
 
-class UpdateViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+class PostDetail(generics.RetrieveAPIView):
+    queryset = Post.postobjects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
 
-class DeleteViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+class UpdatePost(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.postobjects.all()
+    serializer_class = UpdateSerializer
     permission_classes = (AllowAny, )
+    
+
+    
 
 
 # def send_friend_request(request, userID):
