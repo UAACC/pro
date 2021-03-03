@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from .models import Author, Post
+from .models import Author, Post, Comment
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,18 +15,39 @@ class UserSerializer(serializers.ModelSerializer):
         author = Author.objects.create(username=user.username)
         return user
 
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'content', 'authorId', 'postId']
+
+
 class PostSerializer(serializers.ModelSerializer):
+
+    comments = CommentSerializer(many=True)
+
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'author', 'published']
+        fields = ['id', 'title', 'description', 'author', 'published', 'comments']
+
+
+# class FriendRequestSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = FriendRequest
+#         fields = ('id', 'to_user', 'from_user')
+
 
 class AuthorSerializer(serializers.ModelSerializer):
 
     posts = PostSerializer(many=True)
+    # out_requests = FriendRequestSerializer(many=True)
+    # in_requests = FriendRequestSerializer(many=True)
 
     class Meta:
         model = Author
-        fields = ('id', 'token', 'username', 'display_name', 'email', 'password', 'bio', 'github', 'is_approved', 'posts')
-
+        # fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'out_requests', 'in_requests')
+        fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts')
 
 

@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
 from .serializers import UserSerializer, AuthorSerializer, PostSerializer
 from .models import Author, Post
-# from .models import Friend_Request
 from django.http import HttpResponse
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,17 +19,18 @@ class AuthorViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
-    def get(self, request, pk=None):
+    def get(self, request, *args, **kwargs):
+        print("GET /api/authors/")
         username = request.user['username']
         author = Author.objects.get(username=username)
         return Response(author, status=status.HTTP_200_OK)
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
-#
-#
+
 # def send_friend_request(request, userID):
 #     from_user = request.user
 #     to_user = User.objects.get(id=userID)
@@ -41,8 +41,8 @@ class PostViewSet(viewsets.ModelViewSet):
 #         return HttpResponse('Friend request sent')
 #     else:
 #         return HttpResponse('Friend request not accepted')
-#
-#
+
+
 # def accept_friend_request(request, requestID):
 #     friend_request = Friend_Request.objects.get(id=requestID)
 #     if friend_request.to_user == request.user:
@@ -52,5 +52,3 @@ class PostViewSet(viewsets.ModelViewSet):
 #         return HttpResponse('Friend request accepted')
 #     else:
 #         return HttpResponse('Friend request not accepted')
-#
-#
