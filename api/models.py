@@ -22,7 +22,13 @@ class Comment(models.Model):
     content = models.CharField(max_length=256, default="")
     authorId = models.ForeignKey(Author, on_delete=models.CASCADE)
     postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    published = models.DateTimeField(default=timezone.now)
 
+
+class Like(models.Model):
+    postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes")
+    published = models.DateTimeField(default=timezone.now)
 
 # class FriendRequest(models.Model):
 #     from_user = models.ForeignKey(

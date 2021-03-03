@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import Main from "./pages/main";
-import SignIn from "./pages/signin"
-import SignUp from "./pages/signup"
+import SignIn from "./pages/signin";
+import SignUp from "./pages/signup";
+import Header from "./components/Header";
 
 class App extends React.Component {
   constructor(props) {
