@@ -38,6 +38,49 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
+def get_comment(request, postId):
+    # get comments id from post
+    post = Post.objects.get(id=postId)
+    commentIds = post.comments
+
+    # get comments by id
+    comments = []
+    for commentId in commentIds:
+        comments.append(Comment.objects.get(id=commentId))
+
+    return HttpResponse(comments)
+
+def post_comment(request, postId):
+    post = Post.objects.get(id=postId)
+    # create commen
+    # save comment
+
+    return HttpResponse()
+
+def update_comment(request, postId):
+    return HttpResponse()
+
+def delete_comment(request, postId):
+    return HttpResponse()
+
+def get_comment_like(request, commentId):
+    return HttpResponse()
+
+def post_comment_like(request, commentId):
+    return HttpResponse()
+
+def delete_comment_like(request, commentId):
+    return HttpResponse()
+
+def get_post_like(request, postId):
+    return HttpResponse()
+
+def post_post_like(request, postId):
+    return HttpResponse()
+
+def delete_post_like(request, postId):
+    return HttpResponse()
+
 
 # Post
 class PostList(generics.ListAPIView):

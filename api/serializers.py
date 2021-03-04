@@ -17,20 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class LikeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Like
-        fields = ['id', 'postId', 'commentId', 'published']
-
-
 class CommentSerializer(serializers.ModelSerializer):
 
     likes = LikeSerializer(many=True, required=False)
 
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'authorId', 'postId', 'likes', 'published']
+        fields = ['id', 'content', 'author', 'published']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -40,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
+        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published','image','status']
 
     
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -77,7 +70,4 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'friend_requests')
-        # fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts')
-
-
+        fields = ('id', 'username', 'password', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'friend_requests')
