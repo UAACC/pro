@@ -26,8 +26,8 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
-    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes")
+    postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True, blank=True)
+    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True)
     published = models.DateTimeField(default=timezone.now)
 
 # class FriendRequest(models.Model):

@@ -25,11 +25,13 @@ class AuthorViewSet(viewsets.ModelViewSet):
         author = Author.objects.get(username=username)
         return Response(author, status=status.HTTP_200_OK)
 
+
 class LikeViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = LikeSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -37,29 +39,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (AllowAny, )
-
-# def send_friend_request(request, userID):
-#     from_user = request.user
-#     to_user = User.objects.get(id=userID)
-#     friend_request, created = Friend_Request.objects.get_or_create(
-#         from_user = from_user, to_user = to_user
-#     )
-#     if created:
-#         return HttpResponse('Friend request sent')
-#     else:
-#         return HttpResponse('Friend request not accepted')
-
-
-# def accept_friend_request(request, requestID):
-#     friend_request = Friend_Request.objects.get(id=requestID)
-#     if friend_request.to_user == request.user:
-#         friend_request.to_user.friends.add(friend_request.from_user)
-#         friend_request.from_user.friends.add(friend_request.to_user)
-#         friend_request.delete()
-#         return HttpResponse('Friend request accepted')
-#     else:
-#         return HttpResponse('Friend request not accepted')
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
