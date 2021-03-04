@@ -75,37 +75,42 @@ class DeletePost(generics.DestroyAPIView):
 
 # Friend Request
 
-class FriendRequestViewSet(viewsets.ModelViewSet):
-    queryset = FriendRequest.objects.all()
-    serializer_class = FriendRequestSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+# class FriendRequestViewSet(viewsets.ModelViewSet):
+#     queryset = FriendRequest.objects.all()
+#     serializer_class = FriendRequestSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
 
-def check_and_get(request, userId):
+# def create_request(request, userID):
+#     from_user = request.user
+#     to_user = Author.objects.get(id=userID)
+#     friend_request = FriendRequest.objects.get(
+#         from_user=from_user, to_user=to_user
+#     )
+#     if friend_request:
+#         return HttpResponse('Friend request already exists.')
+#     else:
+#         FriendRequest.objects.create(from_user=from_user, to_user=to_user)
+#         to_user.friend_requests.add(FriendRequest.object.get(from_user=from_user))
+#         return HttpResponse('Friend request has been created.')
+#
+
+def create_request(request, userID):
     from_user = request.user
-        to_user = Author.objects.get(id=userID)
-        friend_request = FriendRequest.objects.get(
-            from_user=from_user, to_user=to_user
-        )
-        if friend_request:
-            return HttpResponse('Friend request already exists.')
-        
-
-    def post(self, request, userID):
-        from_user = request.user
-        to_user = Author.objects.get(id=userID)
-        created = FriendRequest.objects.create(
-            from_user=from_user, to_user=to_user
-        )
-        if created:
-            to_user.friend_requests.add(FriendRequest.object.get(from_user=from_user))
-            return HttpResponse('Friend request created.')
+    to_user = User.objects.get(id=userID)
+    friend_request, created = FriendRequest.objects.get_or_create(
+        from_user = from_user, to_user = to_user)
+    if created:
+        return HttpResponse('Friend request sent')
+    else:
+        return HttpResponse('Friend request not accepted')
 
 
-    def put(self, request, requestID):
-        friend_request = FriendRequest.objects.get(id=requestID)
-        if friend_request.to_user == request.user:
-            friend_request.to_user.friends.add(friend_request.from_user)
-            friend_request.from_user.friends.add(friend_request.to_user)
-            friend_request.delete()
-            return HttpResponse('Friend request accepted.')
+
+def accept_request(request, requestID):
+    friend_request = FriendRequest.objects.get(id=requestID)
+    if friend_request.to_user == request.user:
+        friend_request.to_user.friends.add(friend_request.from_user)
+        friend_request.from_user.friends.add(friend_request.to_user)
+        friend_request.delete()
+        return HttpResponse('Friend request accepted.')
