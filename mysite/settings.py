@@ -25,9 +25,11 @@ SECRET_KEY = 'pmkbeepo#g1__ys#^ce^%6h_=j6g)ky=5)#=h660z$h97l&n4t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
+CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000'
 ]
+
+ALLOWED_HOSTS = []
 
 # Application definition
 

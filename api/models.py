@@ -53,10 +53,6 @@ class Like(models.Model):
     published = models.DateTimeField(default=timezone.now)
 
 
-# class FriendRequest(models.Model):
-#     from_user = models.ForeignKey(
-#         Author, related_name='from_user', on_delete=models.CASCADE, related_name="comments"
-#     )
-#     to_user = models.ForeignKey(
-#         Author, related_name='to_user', on_delete=models.CASCADE
-#     )
+class FriendRequest(models.Model):
+    from_user = models.ForeignKey(Author, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(Author, related_name='to_user', on_delete=models.CASCADE)

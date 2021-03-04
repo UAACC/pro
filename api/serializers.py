@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
-from .models import Author, Post, Comment, Like
+from .models import Author, Post, Comment, Like, FriendRequest
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -63,22 +63,21 @@ class UpdateSerializer(serializers.ModelSerializer):
 
 
 
-# class FriendRequestSerializer(serializers.ModelSerializer):
+class FriendRequestSerializer(serializers.ModelSerializer):
 
-#     class Meta:
-#         model = FriendRequest
-#         fields = ('id', 'to_user', 'from_user')
+    class Meta:
+        model = FriendRequest
+        fields = ('id', 'to_user', 'from_user')
 
 
 class AuthorSerializer(serializers.ModelSerializer):
 
     posts = PostSerializer(many=True, required=False)
-    # out_requests = FriendRequestSerializer(many=True)
-    # in_requests = FriendRequestSerializer(many=True)
+    friend_requests = FriendRequestSerializer(many=True, required=False)
 
     class Meta:
         model = Author
-        # fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'out_requests', 'in_requests')
-        fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts')
+        fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'friend_requests')
+        # fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts')
 
 
