@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 class Author(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     username = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
