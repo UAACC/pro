@@ -3,11 +3,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny,IsAdminUser,IsAuthenticatedOrReadOnly#update/retrive
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer
 from .models import Author, Post
 from django.http import HttpResponse
 from .permissions import IsOwnerOrReadOnly
+User = get_user_model()
 
 # user and author
 class UserViewSet(viewsets.ModelViewSet):
