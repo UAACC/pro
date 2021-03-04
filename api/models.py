@@ -12,7 +12,7 @@ class Author(AbstractUser):
     github = models.URLField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
-    friend_requests = ArrayField(EmbeddedModelField('Author'))
+    friend_requests = ArrayField(models.TextField())
     posts = ArrayField(models.TextField())
 
 
@@ -31,7 +31,7 @@ class Post(models.Model):
     description = models.CharField(max_length=255, default="")
     authorId = models.TextField()
     published = models.DateTimeField(auto_now_add=True, null=True)
-    tags = ListField(models.TextField())
+    tags = ArrayField(models.TextField())
     comments = ArrayField(models.TextField())
     likes = ArrayField(models.TextField())
     # image = models.ImageField(null = True, blank = True, upload_to= "images/")
@@ -51,5 +51,5 @@ class Comment(models.Model):
 
 
 class FriendRequest(models.Model):
-    from_user = author = models.TextField()
-    to_user = author = models.TextField()
+    from_user = models.TextField()
+    to_user = models.TextField()

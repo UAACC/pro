@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
-from .models import Author, Post, Comment, Like, FriendRequest
+from .models import Author, Post, Comment, FriendRequest
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,17 +19,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    likes = LikeSerializer(many=True, required=False)
+    # likes = LikeSerializer(many=True, required=False)
 
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'author', 'published']
+        fields = ['id', 'content', 'author', 'published', 'likes']
 
 
 class PostSerializer(serializers.ModelSerializer):
 
-    comments = CommentSerializer(many=True, required=False)
-    likes = LikeSerializer(many=True, required=False)
+    # comments = CommentSerializer(many=True, required=False)
+    # likes = LikeSerializer(many=True, required=False)
 
     class Meta:
         model = Post
@@ -38,8 +38,8 @@ class PostSerializer(serializers.ModelSerializer):
     
 class PostCreateSerializer(serializers.ModelSerializer):
 
-    comments = CommentSerializer(many=True, required=False)
-    likes = LikeSerializer(many=True, required=False)
+    # comments = CommentSerializer(many=True, required=False)
+    # likes = LikeSerializer(many=True, required=False)
 
     class Meta:
         model = Post

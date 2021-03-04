@@ -1,18 +1,19 @@
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from .views import UserViewSet, AuthorViewSet, CommentViewSet, LikeViewSet
+from .views import UserViewSet, AuthorViewSet, CommentViewSet
 from .views import PostList, PostDetail, UpdatePost, PostCreate, DeletePost, FriendRequestViewSet
 from .views import get_comment, post_comment, update_comment, delete_comment
 from .views import get_comment_like, post_comment_like, delete_comment_like
 from .views import get_post_like, post_post_like, delete_post_like
+from .views import create_request, accept_request
 from . import views
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('authors', AuthorViewSet)
 router.register('friend_requests', FriendRequestViewSet)
 router.register('comments', CommentViewSet)
-router.register('likes', LikeViewSet)
+# router.register('likes', LikeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -25,7 +26,8 @@ urlpatterns = [
     path('posts/', PostList.as_view()),
 
     # Friend Requests
-    path('friend_requests/check_and_get/<int:requestId>/')
+    path('create_request/<int:userID>/', create_request, name = 'send friend request'),
+    path('accept_request/<int:requestID>/', accept_request, name = 'accept friend request'),
 
     # Comments
     path('comments/get_comment/<int:postId>/', get_comment, name="get_comment"),
