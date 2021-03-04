@@ -10,4 +10,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', obtain_auth_token),
 
-]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

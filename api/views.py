@@ -8,7 +8,7 @@ from .serializers import UserSerializer, AuthorSerializer, PostSerializer, Comme
 from .models import Author, Post
 from django.http import HttpResponse
 from .permissions import IsOwnerOrReadOnly
-
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -69,7 +69,12 @@ class DeletePost(generics.DestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
     
+
     
+
+
+    
+
 
     
 
