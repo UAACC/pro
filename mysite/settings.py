@@ -25,6 +25,10 @@ SECRET_KEY = 'pmkbeepo#g1__ys#^ce^%6h_=j6g)ky=5)#=h660z$h97l&n4t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:3000'
+]
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -78,8 +82,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgresql',
+        'USER': 'postgres',
+        'PASSWORD': '1234!',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -129,4 +137,4 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mysite')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 STATIC_URL = '/static/'
 
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'api.Author'
