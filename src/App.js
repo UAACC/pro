@@ -5,6 +5,7 @@ import Main from "./pages/main";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
 import Header from "./components/Header";
+import Editpost from "./pages/editpost";
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class App extends React.Component {
           <Route exact path="/" component={Main} />
           <Route exact path="/signin" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/editpost" component={Editpost} />
         </Switch>
       </BrowserRouter>
     );

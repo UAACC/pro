@@ -1,6 +1,7 @@
 import React from "react";
 // redux
 import Posting from "./Posting.jsx";
+import Profile from "./Profile.jsx";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -16,8 +17,12 @@ export default function Gridsturc() {
         alignItems="flex-start"
       >
         <Grid item xs={3}>
-          <Paper style={{ height: "400px" }}>profile</Paper>
-          <Paper style={{ height: "300px", marginTop: "10px" }}>profile</Paper>
+          <Paper style={{ height: "400px" }}>
+            <Profile></Profile>
+          </Paper>
+          <Paper style={{ height: "300px", marginTop: "10px" }}>
+            <Posting style={{ margin: "10px" }}></Posting>
+          </Paper>
         </Grid>
         <Grid item xs={6}>
           <Paper style={{ height: "710px", overflow: "auto" }}>

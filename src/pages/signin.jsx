@@ -23,7 +23,7 @@ class SignInPage extends React.Component {
   }
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      visibility: event.target.value,
     });
   }
   handleSubmit = async (event) => {
