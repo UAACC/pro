@@ -22,12 +22,6 @@ class AuthorViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
 
-    def get(self, request, *args, **kwargs):
-        print("GET /api/authors/")
-        username = request.user['username']
-        author = Author.objects.get(username=username)
-        return Response(author, status=status.HTTP_200_OK)
-
 
 # Like & Comment
 class LikeViewSet(viewsets.ModelViewSet):

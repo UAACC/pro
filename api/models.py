@@ -12,6 +12,7 @@ class Author(AbstractUser):
     bio = models.TextField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
 
+
 options = (('draft','Draft'),
     ('published','Published')
 )
@@ -49,6 +50,7 @@ class Like(models.Model):
     postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True, blank=True)
     commentId = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True, blank=True)
     published = models.DateTimeField(default=timezone.now)
+
 
 # class FriendRequest(models.Model):
 #     from_user = models.ForeignKey(
