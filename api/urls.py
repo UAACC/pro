@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from .views import UserViewSet, AuthorViewSet, CommentViewSet, LikeViewSet,PostList,PostDetail,UpdatePost,PostCreate,DeletePost,#PostSearchList
+from .views import UserViewSet, AuthorViewSet, CommentViewSet, LikeViewSet,PostList,PostDetail,UpdatePost,PostCreate,DeletePost#PostSearchList
 from . import views
 
 

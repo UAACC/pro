@@ -2,14 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style/common.css";
 import Header from "../components/Header";
-import Grid from "@material-ui/core/Grid";
-import Posting from "../components/Posting";
+
 import PostsScroll from "../components/PostsScroll";
 
-
-
 class ProfilePage extends React.Component {
-
   render() {
     return (
       <div>

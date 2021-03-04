@@ -31,15 +31,6 @@ export default function Gridsturc() {
           </Paper>
         </Grid>
         <Grid item xs={3}>
-          <Paper style={{ height: "50px" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ height: "100%", width: "100%" }}
-            >
-              share your thoughts
-            </Button>
-          </Paper>
           <Paper style={{ height: "650px", marginTop: "10px" }}>profile</Paper>
         </Grid>
       </Grid>
