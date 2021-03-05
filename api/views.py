@@ -107,7 +107,7 @@ class PostList(generics.ListAPIView):
 
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostCreateSerializer
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
     

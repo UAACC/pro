@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "E:\\ANACONDA\\python.exe"
+    "python.pythonPath": "E:\\ANACONDA\\python.exe",
+    "git.ignoreLimitWarning": true
 }
