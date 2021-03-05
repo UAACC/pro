@@ -52,6 +52,33 @@ class Header extends React.Component {
                   my profile
                 </a>
               </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="/profile"
+                >
+                  friend list
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="/signin"
+                >
+                  sign in
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="/"
+                >
+                  log out
+                </a>
+              </li>
             </ul>
             <form className="d-flex">
               <input
