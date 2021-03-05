@@ -5,7 +5,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
-from .serializers import AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer,CategorySerializer
+from .serializers import AuthorSerializer, CommentSerializer, LikeSerializer
+from .serializers import PostCreateSerializer,CategorySerializer, UpdateSerializer, PostSerializer
 from .models import Author, Post, Category, Like, Comment
 from django.http import JsonResponse, HttpResponse
 from .permissions import IsOwnerOrReadOnly
@@ -32,9 +33,10 @@ class AuthorViewSet(viewsets.ModelViewSet):
             response = {'id': author.id, 'email': author.email, 'username': author.username, 'password': author.password, 'token': token.key}
             return JsonResponse(response)
 
+
 # Like & Comment
 class LikeViewSet(viewsets.ModelViewSet):
-    queryset = Post.postobjects.all()
+    queryset = Like.objects.all()
     serializer_class = LikeSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
@@ -68,7 +70,7 @@ class LikeViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Post.postobjects.all()
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
@@ -80,21 +82,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         Comment.objects.create(author=author, post=post, content=content)
         return HttpResponse('Good request, comment created!')
 
-    def patch(self, request):
-        author = Author.objects.get(username=request.user)
-        content = request.data['content']
-        post = Post.objects.get(id=request.data['post'])
-        try:
-            comment = Comment.objects.get(author=author, post=post)
-            print("1", author, post, comment)
-            comment.update(content=content)
-            print("2")
-            comment.save()
-            print("3")
-            return HttpResponse('Good request, comment updated!')
-        except: 
-            return HttpResponse('Bad request')
 
+# Post
 class PostList(generics.ListAPIView):
     
     serializer_class = PostSerializer
@@ -107,7 +96,7 @@ class PostList(generics.ListAPIView):
 
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostCreateSerializer
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
     

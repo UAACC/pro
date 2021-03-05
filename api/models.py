@@ -15,7 +15,7 @@ class Author(AbstractUser):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, default='')
-    owner = models.ForeignKey(Author, related_name='categories', on_delete=models.CASCADE)
+    owner = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='categories')
     posts = models.ManyToManyField('Post', related_name='categories', blank=True)
 
     class Meta:
@@ -45,13 +45,13 @@ class Post(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=256, default="")
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="comments")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     published = models.DateTimeField(default=timezone.now)
 
 
 class Like(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="likes")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True)
     published = models.DateTimeField(default=timezone.now)
