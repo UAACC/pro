@@ -7,6 +7,7 @@ import SignUp from "./pages/signup";
 import Header from "./components/Header";
 import Editpost from "./pages/editpost";
 import ProfilePage from "./pages/profile";
+import PostDetail from "./pages/postDetail";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,6 +29,8 @@ class App extends React.Component {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/editpost" component={Editpost} />
           <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/posts" component={Main} />
+          <Route path="/posts/:id" component={PostDetail} />
         </Switch>
       </BrowserRouter>
     );
