@@ -21,6 +21,7 @@ class PostsScroll extends React.Component {
     this.setState({posts:doc.data})
   }
 
+  
   render() {
     console.log("---inside render");
     const {posts} = this.state;
