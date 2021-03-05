@@ -108,16 +108,17 @@ class PostList(generics.ListAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (AllowAny, )
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
     
-    def create(self, serializer):
-        serializer.save(Author=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 class PostDetail(generics.RetrieveAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
-    permission_classes = (AllowAny, )
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
 
 class UpdatePost(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.postobjects.all()

@@ -26,7 +26,7 @@ class Post(models.Model):
 
     class PostObjects(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(publicity= True)
+            return super().get_queryset().all()
 
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256, default="")
