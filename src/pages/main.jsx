@@ -13,9 +13,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
-        
         <Header></Header>
-        <center><h2 style={{font:"italic"}}>welcome to SpongebobClone</h2></center>
         <PostsScroll></PostsScroll>
       </div>
     );

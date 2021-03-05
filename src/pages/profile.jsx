@@ -10,9 +10,11 @@ import PostsScroll from "../components/PostsScroll";
 class ProfilePage extends React.Component {
   render() {
     return (
-      <div>    
+      <div>
         <Header></Header>
-        <div style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}>
+        <div
+          style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}
+        >
           <ProfileComponent></ProfileComponent>
         </div>
         <PostsScroll></PostsScroll>
