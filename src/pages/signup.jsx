@@ -1,5 +1,4 @@
 import React from "react";
-/*import SignInForm from "../components/signin/signin-form";*/
 import axios from "axios";
 import "./style/signin.css";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Link from "@material-ui/core/Link";
 import { connect } from "react-redux";
 import { setCurrentUser } from "../redux/user/useractions";
+import Cookies from 'js-cookie'
 
 class SignUpPage extends React.Component {
   constructor(props) {
@@ -30,7 +30,14 @@ class SignUpPage extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = this.state;
-    const doc = await axios.post("/api/authors/", { username, password });
+    const csrftoken = Cookies.get('csrftoken');
+    const config = {
+      headers: {
+        'X-CSRFToken': csrftoken,
+        'Content-Type': 'application/json'
+      }
+    }
+    const doc = await axios.post("/api/authors/", { username, password }, config);
     if (!doc.data) {
       window.alert("Wrong crendentials");
     } else {

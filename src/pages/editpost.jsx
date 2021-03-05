@@ -11,7 +11,9 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import { Button } from "@material-ui/core";
 import ChipInput from "material-ui-chip-input";
+import axios from "axios";
 import { connect } from "react-redux";
+import Cookies from "js-cookie"
 
 const emptyPost = {
   value: "",
@@ -38,24 +40,22 @@ class Editpost extends React.Component {
     };
   }
 
-  handleSubmit = (event) => {
-    const { token } = this.props.currentUser;
+  handleSubmit = async (event) => {
     event.preventDefault();
-    const url = "/api/posts/create/";
-    fetch(url, {
-      method: "POST",
+    const { token } = this.props.currentUser;
+    const { title, description } = this.state;
+    const csrftoken = Cookies.get('csrftoken');
+    const config = {
       headers: {
-        Authorization: `Token ${token}`,
+        "Authorization": `Token ${token}`,
+        'X-CSRFToken': csrftoken,
         "Content-type": "application/json",
-      },
-      body: JSON.stringify(this.state),
-    })
-      .then((response) => {
-        // redirect to post detail page
-      })
-      .catch(function (error) {
-        console.log("error", error);
-      });
+      }
+    }
+    const doc = await axios.post(`/api/posts/${this.props.match.params.id}/edit`, { title, description }, config);
+    if (doc.data) {
+      window.location = `/posts/${this.props.match.params.id}/`
+    }
   };
 
   render() {

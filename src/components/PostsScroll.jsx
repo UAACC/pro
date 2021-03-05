@@ -17,7 +17,7 @@ class PostsScroll extends React.Component {
   }
 
   componentDidMount = async () => {
-    const doc = await axios.get("api/posts/");
+    const doc = await axios.get("/api/posts/");
     this.setState({ posts: doc.data });
   };
 
