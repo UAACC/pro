@@ -1,11 +1,11 @@
 # 404-project
 
 ## Project1 - Tasks
-Yanlin - Frontend:  Main page, Post Detail page, Comment and header components
-Peiran - Frontend: Signin page, Signup page, Main page, User Profile Page
-Xutong - Backend: Friend Request API
-Dongheng - Backend: Post API
-Qi Song - Backend: Comment and Like API
+Yanlin - Frontend:  Main page, Post Detail page, Comment and header components <br />
+Peiran - Frontend: Signin page, Signup page, Main page, User Profile Page<br />
+Xutong - Backend: Friend Request API<br />
+Dongheng - Backend: Post API<br />
+Qi Song - Backend: Comment and Like API <br />
 
 ## Frontend
 React
