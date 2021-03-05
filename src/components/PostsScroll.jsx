@@ -1,33 +1,62 @@
 import React from "react";
 // redux
 import Posting from "./Posting.jsx";
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Profile from "./ProfileComponent.jsx";
+import Typography from "@material-ui/core/Typography";
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import axios from "axios";
 
-export default function PostsScroll() {
-  return (
-    <div style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}>
-      <Grid
-        container
-        spacing={4}
-        // direction = "column"
-        direction="horizenol"
-        justify="center"
-        alignItems="flex-start"
-      >
-        <Grid item xs={6}>
-            <Paper style={{ height: "900px", overflow: "auto" }}>
-            <Posting style={{ margin: "10px" }}></Posting>
-            <Posting style={{ margin: "100px" }}></Posting>
-            <Posting style={{ margin: "10px" }}></Posting>
-            </Paper> 
-        </Grid>
-        <Grid item xs={3}>
+class PostsScroll extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      posts:[],
+    };
+  }
+
+  componentDidMount = async() =>{
+    const doc = await axios.get("http://127.0.0.1:8000/api/posts/");
+    this.setState({posts:doc.data})
+  }
+
+  
+  render() {
+    console.log("---inside render");
+    const {posts} = this.state;
+    console.log(posts);
+    return (
+<div style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}>
+        {posts.length !==0 ?
+        (
+          posts.map((post)=>(
+            <Grid item xs={6}>
+              <Paper style={{  overflow: "auto" }}>
+              <Posting post = {post}></Posting>
+              </Paper> 
+            </Grid>
+          ))
+        ):
+        (
+          <center>
+          <HourglassEmptyIcon fontSize="large" style={{ marginTop: 20 }}></HourglassEmptyIcon>
+          <Typography variant="h3" style={{ marginLeft: 20 }}>processing ...</Typography>
+          </center>
+        )
+        }
+              <Grid item xs={3}>
           <Profile></Profile>
         </Grid>
-      </Grid>
-    </div>
-  );
+      </div>
+      
+    );
+  }
 }
+
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+// });
+
+// export default connect(mapStateToProps)(Header);
+export default PostsScroll;
