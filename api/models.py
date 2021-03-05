@@ -14,6 +14,14 @@ options = (('draft','Draft'),
 
     ('published','Published')
 )
+class Category(models.Model):
+    name = models.CharField(max_length=100, blank=False, default='')
+    owner = models.ForeignKey(Author, related_name='categories', on_delete=models.CASCADE)
+    posts = models.ManyToManyField('Post', related_name='categories', blank=True)
+
+    class Meta:
+        verbose_name_plural = 'categories'
+
 class Post(models.Model):
 
     class PostObjects(models.Manager):
@@ -27,12 +35,12 @@ class Post(models.Model):
     
     image = models.ImageField(null = True, blank = True, upload_to= "images/")
     status = models.CharField(max_length = 10, choices = options, default = 'published')
-
+    
     objects= models.Manager()#defaut
     postobjects = PostObjects()
 
     def __str__(self):
-        return self.title
+        return self.title +' | ' + str(self.id)
 
 
 class Comment(models.Model):

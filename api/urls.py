@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from .views import UserViewSet, AuthorViewSet, CommentViewSet, LikeViewSet,PostList,PostDetail,UpdatePost,PostCreate,DeletePost#PostSearchList
+from .views import UserViewSet, AuthorViewSet, CommentViewSet, LikeViewSet,PostList,PostDetail,UpdatePost,PostCreate,DeletePost,CategoryDetail,CategoryList#PostSearchList
 from . import views
 
 
@@ -24,6 +24,8 @@ urlpatterns = [
     path('posts/<int:pk>/delete', DeletePost.as_view()),
     path('posts/', PostList.as_view()),
     #path('posts/search', PostSearchList.as_view()),
+    path('categories/<int:pk>/', CategoryDetail.as_view()),
+    path('categories/', CategoryList.as_view()),
 
 
 ]
