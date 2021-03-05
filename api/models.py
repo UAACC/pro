@@ -15,7 +15,7 @@ class Author(AbstractUser):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, default='')
-    owner = models.ForeignKey(Author, related_name='categories', on_delete=models.CASCADE)
+    owner = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='categories')
     posts = models.ManyToManyField('Post', related_name='categories', blank=True)
 
     class Meta:
@@ -26,9 +26,8 @@ class Post(models.Model):
 
     class PostObjects(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(publicity= True)
+            return super().get_queryset().all()
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256, default="")
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
@@ -45,15 +44,24 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     content = models.CharField(max_length=256, default="")
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="comments")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     published = models.DateTimeField(default=timezone.now)
 
 
 class Like(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="likes")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True)
     published = models.DateTimeField(default=timezone.now)
+
+
+class FriendRequest(models.Model):
+    class Meta:
+        unique_together = (("from_user", "to_user"),)
+
+    Friendship_status = (("R", "Requested"), ("A", "Accepted"), ("D", "Declined"))
+    from_user = models.ForeignKey(Author, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(Author, related_name='to_user', on_delete=models.CASCADE)
+    status = models.CharField(choices=Friendship_status, default= "Requested", max_length= 1)

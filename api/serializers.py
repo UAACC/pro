@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Author, Post, Comment, Like,Category
+from .models import Author, Post, Comment, Like,Category, FriendRequest
 
 class LikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Like
-        fields = ['id', 'post', 'comment', 'published']
+        fields = ['id', 'author', 'post', 'comment', 'published']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,7 +31,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published','publicity','categories']
+        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published', 'publicity','categories']
 
     
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -41,7 +41,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published','publicity']
+        fields = ['id', 'title', 'description', 'comments', 'likes', 'published','publicity']
 
 
 class UpdateSerializer(serializers.ModelSerializer):
@@ -60,3 +60,9 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ('id', 'username', 'password', 'email', 'bio', 'github', 'is_approved', 'posts', 'likes', 'comments')
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields = ['from_user', 'to_user', 'status']
