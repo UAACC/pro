@@ -51,7 +51,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status','categories']
+        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity','categories']
 
     
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -61,7 +61,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
+        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity']
 
 
 class UpdateSerializer(serializers.ModelSerializer):
@@ -69,7 +69,7 @@ class UpdateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'published','image','status']
+        fields = ['id', 'title', 'description', 'published','image','publicity']
 
 
 

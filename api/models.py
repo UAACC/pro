@@ -10,10 +10,10 @@ class Author(models.Model):
     bio = models.TextField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
 
-options = (('draft','Draft'),
+#options = (('private','Private'),
 
-    ('published','Published')
-)
+    ##('public','Public')
+#)
 class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, default='')
     owner = models.ForeignKey(Author, related_name='categories', on_delete=models.CASCADE)
@@ -26,7 +26,7 @@ class Post(models.Model):
 
     class PostObjects(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(status= 'published')
+            return super().get_queryset().filter(publicity= True)
 
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256, default="")
@@ -34,7 +34,8 @@ class Post(models.Model):
     published = models.DateTimeField(default=timezone.now)
     
     image = models.ImageField(null = True, blank = True, upload_to= "images/")
-    status = models.CharField(max_length = 10, choices = options, default = 'published')
+    #status = models.CharField(max_length = 10, choices = options, default = 'public')
+    publicity = models.BooleanField(default=True)
     
     objects= models.Manager()#defaut
     postobjects = PostObjects()

@@ -40,9 +40,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
 class PostList(generics.ListAPIView):
-    queryset = Post.postobjects.all()
+    
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        public_posts = Post.postobjects.filter(publicity = True)
+        return public_posts
 
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
