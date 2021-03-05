@@ -21,7 +21,7 @@ class PostsScroll extends React.Component {
     this.setState({posts:doc.data})
   }
 
-  
+
   render() {
     console.log("---inside render");
     const {posts} = this.state;
@@ -45,9 +45,10 @@ class PostsScroll extends React.Component {
           </center>
         )
         }
-              <Grid item xs={3}>
-          <Profile></Profile>
+          <Grid item xs={3}>
+          
         </Grid>
+        
       </div>
       
     );

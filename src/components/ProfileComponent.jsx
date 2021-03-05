@@ -9,6 +9,8 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 
 const useStyles = makeStyles({
@@ -34,7 +36,9 @@ export default function OutlinedCard() {
   const bull = <span className={classes.bullet}>•</span>;
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Grid item xs={3}>
+              <Paper style={{  overflow: "auto" }}>
+              <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           <AccountBoxIcon fontSize="large"></AccountBoxIcon>
@@ -82,5 +86,8 @@ export default function OutlinedCard() {
       </Button>
       </CardActions>
     </Card>
+              </Paper> 
+    </Grid>
+    
   );
 }
