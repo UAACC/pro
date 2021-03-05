@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import "./style/common.css";
 import Header from "../components/Header";
 import Radio from "@material-ui/core/Radio";
@@ -12,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import { Button } from "@material-ui/core";
 import ChipInput from "material-ui-chip-input";
+import { connect } from "react-redux";
 
 const emptyPost = {
   value: "",
@@ -27,7 +27,6 @@ class Editpost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newpost: {
         autherID: "",
         title: "",
         description: "",
@@ -35,76 +34,28 @@ class Editpost extends React.Component {
         format: "",
         image: "",
         status: "",
-      },
     };
-    this.fetchTask = this.fetchTask.bind(this);
-    this.handledescription = this.handledescription.bind(this);
-    this.handleFormat = this.handleFormat.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillMount() {
-    this.fetchTask();
-  }
-  handleFormat(event) {
-    var name = event.target.name;
-    var value = event.target.value;
-    console.log("name:", name);
-    console.log("value:", value);
-    this.setState({
-      newpost: {
-        ...this.state.newpost,
-        format: value,
-      },
-    });
-  }
-  handledescription(event) {
-    var name = event.target.name;
-    var value = event.target.value;
-    console.log("name:", name);
-    console.log("value:", value);
-    this.setState({
-      newpost: {
-        ...this.state.newpost,
-        description: value,
-      },
-    });
-  }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
+    const { token } = this.props.currentUser;
     event.preventDefault();
-    console.log("item:", this.state.newpost);
-    var url = "http://127.0.0.1:8000/api/posts/create";
+    const url = "/api/posts/create/";
     fetch(url, {
       method: "POST",
       headers: {
+        "Authorization": `Token ${token}`,
         "Content-type": "application/json",
       },
-      body: JSON.stringify(this.state.newpost),
+      body: JSON.stringify(this.state),
     })
       .then((response) => {
-        this.fetchTask();
-        this.setState({
-          PopupImageUpload: false,
-          newpost: {
-            autherID: "",
-            title: "",
-            description: "",
-            published: "",
-            image: "",
-            status: "",
-          },
-        });
+        // redirect to post detail page
       })
       .catch(function (error) {
         console.log("error", error);
       });
-  }
-  fetchTask() {
-    console.log("fetching...");
-    fetch("http://127.0.0.1:8000/api/posts/")
-      .then((response) => response.json())
-      .then((data) => console.log("data:", data));
   }
 
   render() {
@@ -126,7 +77,7 @@ class Editpost extends React.Component {
                 <Paper style={{ height: "710px" }}>
                   <div>
                     <TextField
-                      onChange={this.handledescription}
+                      onChange={(e) => {this.setState({description: e.target.value})}}
                       id="description"
                       name="description"
                       style={{
@@ -135,10 +86,9 @@ class Editpost extends React.Component {
                         marginTop: "3%",
                         width: "94%",
                       }}
-                      label="Multiline"
+                      label="Post Content"
                       multiline
                       rows={6}
-                      defaultValue="Default Value"
                       variant="outlined"
                     ></TextField>
                     {/*
@@ -207,7 +157,7 @@ class Editpost extends React.Component {
                         marginTop: "3%",
                         width: "94%",
                       }}
-                      onChange={this.handleFormat}
+                      onChange={(e) => {this.setState({format: e.target.value})}}
                     >
                       <FormLabel component="legend">Format</FormLabel>
                       <RadioGroup row aria-label="visible" name="visible">
@@ -270,4 +220,8 @@ class Editpost extends React.Component {
   }
 }
 
-export default Editpost;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(Editpost);

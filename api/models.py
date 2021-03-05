@@ -1,19 +1,18 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
+import uuid
 
-class Author(models.Model):
+class Author(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     username = models.CharField(max_length=50, unique=True)
-    display_name = models.CharField(max_length=50, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    password = models.CharField(max_length=50)
+    email = models.EmailField()
     github = models.URLField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
 
-#options = (('private','Private'),
 
-    ##('public','Public')
-#)
 class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, default='')
     owner = models.ForeignKey(Author, related_name='categories', on_delete=models.CASCADE)
@@ -22,22 +21,23 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'categories'
 
+
 class Post(models.Model):
 
     class PostObjects(models.Manager):
         def get_queryset(self):
             return super().get_queryset().filter(publicity= True)
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256, default="")
-    authorId = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
     published = models.DateTimeField(default=timezone.now)
-    
-    image = models.ImageField(null = True, blank = True, upload_to= "images/")
-    #status = models.CharField(max_length = 10, choices = options, default = 'public')
+    # image = models.ImageField(null = True, blank = True, upload_to= "images/")
+    # status = models.CharField(max_length = 10, choices = options, default = 'public')
     publicity = models.BooleanField(default=True)
     
-    objects= models.Manager()#defaut
+    objects= models.Manager() #defaut
     postobjects = PostObjects()
 
     def __str__(self):
@@ -45,21 +45,15 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     content = models.CharField(max_length=256, default="")
-    authorId = models.ForeignKey(Author, on_delete=models.CASCADE)
-    postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     published = models.DateTimeField(default=timezone.now)
 
 
 class Like(models.Model):
-    postId = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
-    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes")
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True)
     published = models.DateTimeField(default=timezone.now)
-
-# class FriendRequest(models.Model):
-#     from_user = models.ForeignKey(
-#         Author, related_name='from_user', on_delete=models.CASCADE, related_name="comments"
-#     )
-#     to_user = models.ForeignKey(
-#         Author, related_name='to_user', on_delete=models.CASCADE
-#     )

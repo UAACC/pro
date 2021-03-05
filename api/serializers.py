@@ -1,31 +1,11 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
 from .models import Author, Post, Comment, Like,Category
-
-
-
-
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'password')
-        extra_kwargs = {'password': {'write_only': True, 'required': True}}
-
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        token = Token.objects.create(user=user)
-        author = Author.objects.create(username=user.username)
-        return user
-
 
 class LikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Like
-        fields = ['id', 'postId', 'commentId', 'published']
+        fields = ['id', 'post', 'comment', 'published']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -34,7 +14,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'authorId', 'postId', 'likes', 'published']
+        fields = ['id', 'content', 'author', 'post', 'likes', 'published']
 
 class CategorySerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='Author.username')
@@ -51,7 +31,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity','categories']
+        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published','publicity','categories']
 
     
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -61,35 +41,22 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity']
+        fields = ['id', 'title', 'description', 'author', 'comments', 'likes', 'published','publicity']
 
 
 class UpdateSerializer(serializers.ModelSerializer):
 
-    
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'published','image','publicity']
-
-
-
-
-# class FriendRequestSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = FriendRequest
-#         fields = ('id', 'to_user', 'from_user')
+        fields = ['id', 'title', 'description', 'published', 'publicity']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
 
     posts = PostSerializer(many=True, required=False)
-    # out_requests = FriendRequestSerializer(many=True)
-    # in_requests = FriendRequestSerializer(many=True)
+    likes = LikeSerializer(many=True, required=False)
+    comments = CommentSerializer(many=True, required=False)
 
     class Meta:
         model = Author
-        # fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts', 'out_requests', 'in_requests')
-        fields = ('id', 'username', 'display_name', 'email', 'bio', 'github', 'is_approved', 'posts')
-
-
+        fields = ('id', 'username', 'password', 'email', 'bio', 'github', 'is_approved', 'posts', 'likes', 'comments')

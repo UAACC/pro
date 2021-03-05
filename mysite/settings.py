@@ -132,4 +132,4 @@ STATIC_URL = '/static/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'api.Author'

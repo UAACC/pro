@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Link from "@material-ui/core/Link";
+import { connect } from "react-redux";
+import { setCurrentUser } from "../redux/user/useractions";
 
 class SignUpPage extends React.Component {
   constructor(props) {
@@ -27,20 +29,15 @@ class SignUpPage extends React.Component {
     });
   }
   handleSubmit = async (event) => {
-    const { email, username, password } = this.state;
-    axios
-      .post("/api/users/", {
-        email: email,
-        username: username,
-        password: password,
-      })
-      .then((response) => {
-        console.log("res from login", response);
-      })
-      .catch((error) => {
-        console.log("login error", error);
-      });
     event.preventDefault();
+    const { username, password, email} = this.state;
+    const doc = await axios.post("/api/authors/", { username, password, email });
+    if (!doc.data) {
+      window.alert("Wrong crendentials");
+    } else {
+      await this.props.setCurrentUser(doc.data);
+      window.location = "/";
+    }
   };
 
   render() {
@@ -120,4 +117,12 @@ class SignUpPage extends React.Component {
     );
   }
 }
-export default SignUpPage;
+
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUpPage);
+
+
