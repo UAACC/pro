@@ -55,3 +55,13 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True)
     published = models.DateTimeField(default=timezone.now)
+
+
+class FriendRequest(models.Model):
+    class Meta:
+        unique_together = (("from_user", "to_user"),)
+
+    Friendship_status = (("R", "Requested"), ("A", "Accepted"), ("D", "Declined"))
+    from_user = models.ForeignKey(Author, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(Author, related_name='to_user', on_delete=models.CASCADE)
+    status = models.CharField(choices=Friendship_status, default= "Requested", max_length= 1)

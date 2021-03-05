@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Author, Post, Comment, Like,Category
+from .models import Author, Post, Comment, Like,Category, FriendRequest
 
 class LikeSerializer(serializers.ModelSerializer):
 
@@ -60,3 +60,9 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ('id', 'username', 'password', 'email', 'bio', 'github', 'is_approved', 'posts', 'likes', 'comments')
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields = ['from_user', 'to_user', 'status']
