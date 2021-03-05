@@ -45,6 +45,7 @@ class PostList(generics.ListAPIView):
     permission_classes = (AllowAny, )
 
     def get_queryset(self):
+        #import pdb; pdb.set_trace()
         public_posts = Post.postobjects.filter(publicity = True)
         return public_posts
 
@@ -53,7 +54,7 @@ class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     
-    def create_view(self, serializer):
+    def perform_create(self, serializer):
         serializer.save(authorId = self.request.user)
 
 class PostDetail(generics.RetrieveAPIView):
@@ -79,7 +80,7 @@ class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def create_view(self, serializer):
+    def perform_create(self, serializer):
         serializer.save(authorId=self.request.user)
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
