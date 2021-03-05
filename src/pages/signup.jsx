@@ -14,7 +14,6 @@ class SignUpPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
       username: "",
       password: "",
       loginError: "",
@@ -30,8 +29,8 @@ class SignUpPage extends React.Component {
   }
   handleSubmit = async (event) => {
     event.preventDefault();
-    const { username, password, email} = this.state;
-    const doc = await axios.post("/api/authors/", { username, password, email });
+    const { username, password } = this.state;
+    const doc = await axios.post("/api/authors/", { username, password });
     if (!doc.data) {
       window.alert("Wrong crendentials");
     } else {
@@ -47,18 +46,6 @@ class SignUpPage extends React.Component {
           <h2>Create account</h2>
           <form className="form" onSubmit={this.handleSubmit}>
             <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="E-mail"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"

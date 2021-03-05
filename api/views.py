@@ -21,16 +21,15 @@ class AuthorViewSet(viewsets.ModelViewSet):
         try:
             author = Author.objects.get(username=request.data['username'])
             token = Token.objects.get(user=author)
-            response = {'id': author.id, 'username': author.username, 'email': author.email, 'password': author.password, 'token': token.key}
+            response = {'id': author.id, 'username': author.username, 'password': author.password, 'token': token.key}
             return JsonResponse(response)
         except:
             author = Author.objects.create(
                 username=request.data['username'],
                 password=request.data['password'],
-                email=request.data['email'],
             )
             token = Token.objects.create(user=author)
-            response = {'id': author.id, 'email': author.email, 'username': author.username, 'password': author.password, 'token': token.key}
+            response = {'id': author.id, 'username': author.username, 'password': author.password, 'token': token.key}
             return JsonResponse(response)
 
 
