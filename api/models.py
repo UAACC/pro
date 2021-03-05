@@ -28,7 +28,6 @@ class Post(models.Model):
         def get_queryset(self):
             return super().get_queryset().filter(publicity= True)
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256, default="")
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
@@ -45,7 +44,6 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     content = models.CharField(max_length=256, default="")
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
@@ -53,7 +51,7 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes", null=True)
     published = models.DateTimeField(default=timezone.now)

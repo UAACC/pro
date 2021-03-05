@@ -6,8 +6,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 from .serializers import AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer,CategorySerializer
-from .models import Author, Post, Category
-from django.http import JsonResponse
+from .models import Author, Post, Category, Like, Comment
+from django.http import JsonResponse, HttpResponse
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -39,6 +39,33 @@ class LikeViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
 
+    def create(self, request):
+        author = Author.objects.get(username=request.user)
+        try:
+            commentId = request.data['comment']
+            comment = Comment.objects.get(id=commentId)
+            try:
+                like = Like.objects.get(author=author, comment=comment)
+                like.delete()
+                return HttpResponse('Good request, like is deleted')
+            except:
+                Like.objects.create(author=author, comment=comment)
+                return HttpResponse('Good request, like is created')
+        except:
+            try:
+                postId = request.data['post']
+                post = Post.objects.get(id=postId)
+                try:
+                    like = Like.objects.get(author=author, post=post)
+                    like.delete()
+                    return HttpResponse('Good request, like is deleted')
+                except:
+                    Like.objects.create(author=author, post=post)
+                    return HttpResponse('Good request, like is created')
+            except:
+                return HttpResponse('Bad request')
+
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Post.postobjects.all()
@@ -46,6 +73,27 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
 
+    def create(self, request):
+        author = Author.objects.get(username=request.user)
+        content = request.data['content']
+        post = Post.objects.get(id=request.data['post'])
+        Comment.objects.create(author=author, post=post, content=content)
+        return HttpResponse('Good request, comment created!')
+
+    def patch(self, request):
+        author = Author.objects.get(username=request.user)
+        content = request.data['content']
+        post = Post.objects.get(id=request.data['post'])
+        try:
+            comment = Comment.objects.get(author=author, post=post)
+            print("1", author, post, comment)
+            comment.update(content=content)
+            print("2")
+            comment.save()
+            print("3")
+            return HttpResponse('Good request, comment updated!')
+        except: 
+            return HttpResponse('Bad request')
 
 class PostList(generics.ListAPIView):
     
@@ -60,11 +108,11 @@ class PostList(generics.ListAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
-    permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny, )
     
     def create(self, serializer):
-        print(self.request.user, '!!!!!!!!!!')
-        serializer.save(author = self.request.user)
+        serializer.save(Author=self.request.user)
 
 class PostDetail(generics.RetrieveAPIView):
     queryset = Post.postobjects.all()
