@@ -71,17 +71,17 @@ export default function RecipeReviewCard(props) {
         image="http://www.xinhuanet.com/ent/2018-11/29/1123782546_15434527871911n.jpg"
         title="Paella dish"
       /> */}
-      <CardActionArea onClick = {()=> props.handleClick()}>
-      <CardMedia
-        className={classes.media}
-        image="http://www.xinhuanet.com/ent/2018-11/29/1123782546_15434527871911n.jpg"
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.post.description}
-        </Typography>
-      </CardContent>
+      <CardActionArea onClick={() => props.handleClick()}>
+        <CardMedia
+          className={classes.media}
+          image="http://www.xinhuanet.com/ent/2018-11/29/1123782546_15434527871911n.jpg"
+          title="Paella dish"
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.post.description}
+          </Typography>
+        </CardContent>
       </CardActionArea>
       {/* <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">

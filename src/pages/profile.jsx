@@ -9,18 +9,39 @@ import PostsScroll from "../components/PostsScroll";
 
 class ProfilePage extends React.Component {
   render() {
+    const { token } = this.props.currentUser;
+    console.log(token);
     return (
       <div>
         <Header></Header>
         <div
           style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}
         >
-          <ProfileComponent></ProfileComponent>
+          <Grid
+            container
+            spacing={4}
+            direction="horizenol"
+            justify="center"
+            alignItems="flex-start"
+          >
+            <Grid item xs={8}>
+              <Paper style={{ height: "710px", overflow: "auto" }}>
+                <PostsScroll></PostsScroll>
+              </Paper>
+            </Grid>
+            <Grid item xs={4}>
+              <Paper>
+                <ProfileComponent></ProfileComponent>
+              </Paper>
+            </Grid>
+          </Grid>
         </div>
-        <PostsScroll></PostsScroll>
       </div>
     );
   }
 }
 
-export default ProfilePage;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+export default connect(mapStateToProps)(ProfilePage);

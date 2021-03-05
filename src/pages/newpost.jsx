@@ -13,16 +13,6 @@ import { Button } from "@material-ui/core";
 import ChipInput from "material-ui-chip-input";
 import { connect } from "react-redux";
 
-const emptyPost = {
-  value: "",
-  postTitle: "",
-  postContent: "",
-  postImage: "",
-  sharewith: [],
-  visibility: "public",
-  categories: [],
-};
-
 class Newpost extends React.Component {
   constructor(props) {
     super(props);

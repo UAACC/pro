@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import "./style/common.css";
 import Header from "../components/Header";
 import PostsScroll from "../components/PostsScroll";
+import { Grid } from "@material-ui/core";
 
 class MainPage extends React.Component {
   /*componentDidMount = () => {
@@ -14,7 +15,13 @@ class MainPage extends React.Component {
     return (
       <div>
         <Header></Header>
-        <PostsScroll></PostsScroll>
+        <div
+          style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}
+        >
+          <Grid item xs={9}>
+            <PostsScroll></PostsScroll>
+          </Grid>
+        </div>
       </div>
     );
   }

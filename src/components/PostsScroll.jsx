@@ -17,7 +17,7 @@ class PostsScroll extends React.Component {
   }
 
   componentDidMount = async () => {
-    const doc = await axios.get("http://127.0.0.1:8000/api/posts/");
+    const doc = await axios.get("api/posts/");
     this.setState({ posts: doc.data });
   };
 
@@ -25,10 +25,10 @@ class PostsScroll extends React.Component {
     const { posts } = this.state;
     console.log(posts);
     return (
-      <div style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}>
+      <div>
         {posts.length !== 0 ? (
           posts.map((post) => (
-            <Grid item xs={6}>
+            <Grid item>
               <Paper style={{ overflow: "auto" }}>
                 <Posting
                   post={post}

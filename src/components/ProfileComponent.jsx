@@ -36,61 +36,54 @@ export default function OutlinedCard() {
   const bull = <span className={classes.bullet}>•</span>;
 
   return (
-    <Grid
-      container
-      direction="horizenol"
-      justify="center"
-      alignItems="flex-start"
-    >
-      <Paper style={{ overflow: "auto" }}>
-        <Card className={classes.root}>
-          <CardContent width={1}>
+    <Paper style={{ overflow: "auto" }}>
+      <Card className={classes.root}>
+        <CardContent width={1}>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            <AccountBoxIcon fontSize="large"></AccountBoxIcon>
+            User Profile
+          </Typography>
+          <Typography variant="body1" component="h4">
+            Displayname：
+          </Typography>
+          <Typography variant="body1" component="h4">
+            Username：
+          </Typography>
+          <Typography variant="body1" component="h4">
+            Useremail：
+          </Typography>
+          <Typography variant="body1" component="h4">
+            GitHub:
+          </Typography>
+          <div className="row">
+            <Typography variant="body1" component="h4">
+              Bio:
+            </Typography>
             <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
+              variant="body3"
+              component="p"
+              style={{ marginLeft: "50px" }}
             >
-              <AccountBoxIcon fontSize="large"></AccountBoxIcon>
-              User Profile
+              hello everybody
+              <br />
             </Typography>
-            <Typography variant="body1" component="h4">
-              Displayname：
-            </Typography>
-            <Typography variant="body1" component="h4">
-              Username：
-            </Typography>
-            <Typography variant="body1" component="h4">
-              Useremail：
-            </Typography>
-            <Typography variant="body1" component="h4">
-              GitHub:
-            </Typography>
-            <div className="row">
-              <Typography variant="body1" component="h4">
-                Bio:
-              </Typography>
-              <Typography
-                variant="body3"
-                component="p"
-                style={{ marginLeft: "50px" }}
-              >
-                hello everybody
-                <br />
-              </Typography>
-            </div>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<PersonAddIcon />}
-              style={{ marginLeft: "10px", marginBottom: "10px" }}
-            >
-              Edit
-            </Button>
-          </CardActions>
-        </Card>
-      </Paper>
-    </Grid>
+          </div>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<PersonAddIcon />}
+            style={{ marginLeft: "10px", marginBottom: "10px" }}
+          >
+            Edit
+          </Button>
+        </CardActions>
+      </Card>
+    </Paper>
   );
 }

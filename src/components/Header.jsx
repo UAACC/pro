@@ -41,7 +41,7 @@ class Header extends React.Component {
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            SpongebobClone
+            Socialdistribution
           </a>
           <button
             className="navbar-toggler"
@@ -83,9 +83,9 @@ class Header extends React.Component {
                 <a
                   className="nav-link active"
                   aria-current="page"
-                  href="/profile"
+                  href="/friendrequest"
                 >
-                  friend list
+                  Request Inbox
                 </a>
               </li>
               {this.renderHeader()}
@@ -97,7 +97,7 @@ class Header extends React.Component {
                 placeholder="search author"
                 aria-label="Search"
               ></input>
-              <button className="btn btn-outline-success" type="submit">
+              <button className="btn btn-outline-light" type="submit">
                 search author
               </button>
             </form>
