@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style/common.css";
 import Header from "../components/Header";
-import Gridsturc from "../components/Gridsturc";
+import PostsScroll from "../components/PostsScroll";
 
 class MainPage extends React.Component {
   /*componentDidMount = () => {
@@ -13,8 +13,10 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
+        
         <Header></Header>
-        <Gridsturc></Gridsturc>
+        <center><h2 style={{font:"italic"}}>welcome to SpongebobClone</h2></center>
+        <PostsScroll></PostsScroll>
       </div>
     );
   }
