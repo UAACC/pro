@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from .models import Author, Post, Comment, Like
+from .models import Author, Post, Comment, Like,Category
+
+
+
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,6 +36,13 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'content', 'authorId', 'postId', 'likes', 'published']
 
+class CategorySerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='Author.username')
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'owner', 'posts']
 
 class PostSerializer(serializers.ModelSerializer):
 
@@ -39,7 +51,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
+        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity','categories']
 
     
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -49,7 +61,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','status']
+        fields = ['id', 'title', 'description', 'authorId', 'comments', 'likes', 'published','image','publicity']
 
 
 class UpdateSerializer(serializers.ModelSerializer):
@@ -57,7 +69,7 @@ class UpdateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ['id', 'title', 'description', 'published','image','status']
+        fields = ['id', 'title', 'description', 'published','image','publicity']
 
 
 

@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny,IsAdminUser,IsAuthenticatedOrReadOnly#update/retrive
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer
-from .models import Author, Post
+from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer,CategorySerializer
+from .models import Author, Post,Category
 from django.http import HttpResponse
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -40,9 +40,13 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
 
 class PostList(generics.ListAPIView):
-    queryset = Post.postobjects.all()
+    
     serializer_class = PostSerializer
     permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        public_posts = Post.postobjects.filter(publicity = True)
+        return public_posts
 
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
@@ -70,7 +74,19 @@ class DeletePost(generics.DestroyAPIView):
     permission_classes = (AllowAny, )
     
 
-    
+class CategoryList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def create_view(self, serializer):
+        serializer.save(authorId=self.request.user)
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
 
 
     
