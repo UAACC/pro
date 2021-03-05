@@ -6,8 +6,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny,IsAdminUser,IsA
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer, FriendRequestSerializer
 from .models import Author, Post, FriendRequest
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .permissions import IsOwnerOrReadOnly
+import logging
+
 User = get_user_model()
 
 # user and author
@@ -74,43 +76,92 @@ class DeletePost(generics.DestroyAPIView):
 
 
 # Friend Request
+class FriendRequestViewSet(viewsets.ModelViewSet):
+    serializer_class = FriendRequestSerializer
+    queryset = FriendRequest.objects.all()
 
-# class FriendRequestViewSet(viewsets.ModelViewSet):
-#     queryset = FriendRequest.objects.all()
-#     serializer_class = FriendRequestSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (IsAuthenticated,)
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        return super(FriendRequestViewSet, self).get_permissions()
 
-# def create_request(request, userID):
-#     from_user = request.user
-#     to_user = Author.objects.get(id=userID)
-#     friend_request = FriendRequest.objects.get(
-#         from_user=from_user, to_user=to_user
-#     )
-#     if friend_request:
-#         return HttpResponse('Friend request already exists.')
-#     else:
-#         FriendRequest.objects.create(from_user=from_user, to_user=to_user)
-#         to_user.friend_requests.add(FriendRequest.object.get(from_user=from_user))
-#         return HttpResponse('Friend request has been created.')
-#
+    def create(self, request, *args, **kwargs):
+    # create friend request
+        from_user_id = Author.objects.get(id=request.data["from_user"])
+        to_user_id = Author.objects.get(id=request.data["to_user"])
 
-def create_request(request, userID):
-    from_user = request.user
-    to_user = User.objects.get(id=userID)
-    friend_request, created = FriendRequest.objects.get_or_create(
-        from_user = from_user, to_user = to_user)
-    if created:
-        return HttpResponse('Friend request sent')
-    else:
-        return HttpResponse('Friend request not accepted')
+        if FriendRequest.objects.filter(from_user=from_user_id, to_user=to_user_id, status="R").exists():
+        # Check if the request alreay exists and status is "requested".
+            return Response("Unable to send friend request because the friend request alreay exists!")
+        elif FriendRequest.objects.filter(from_user=from_user_id, to_user=to_user_id, status="A").exists():
+        # Check if the request exists and status is "A"
+            return Response("Unable to send friend request because you have already become friends!")
+        elif FriendRequest.objects.filter(from_user=from_user_id, to_user=to_user_id, status="D").exists():
+        # If your reuqest was declined and send again
+            FriendRequest.objects.update(from_user=from_user_id, to_user=to_user_id, status='R')
+            return Response("Successfully create the friend request!")
 
+        elif FriendRequest.objects.filter(from_user=to_user_id, to_user=from_user_id, status="R").exists():
+        # if he already send the request to you and status is R, then you become friend automatically
+            FriendRequest.objects.update(from_user=to_user_id, to_user=from_user_id, status='A')
+            return Response("He/She had sent the request to you and you become friend automatically!")
+        elif FriendRequest.objects.filter(from_user=to_user_id, to_user=from_user_id, status="A").exists():
+            return Response("Unable to send friend request because you have already become friends!")
+        elif FriendRequest.objects.filter(from_user=to_user_id, to_user=from_user_id, status="D").exists():
+            FriendRequest.objects.update(from_user=to_user_id, to_user=from_user_id, status='R')
+            return Response("Successfully create the friend request!")
 
+        else:
+            friend_request = FriendRequest.objects.create(from_user=from_user_id, to_user=to_user_id, status='R')
+            return Response("Successfully create the friend request!")
+        
+    def accept_incoming_request(self, request, *args, **kwargs):
+    # accept incoming friend request
+        request_from_user_id = Author.objects.get(id=request.data["from_user"])
+        current_user_id = Author.objects.get(id=request.data["to_user"])
+        if FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='A').exists():
+        # Check if the request has already been accepted
+            return Response("Unable to accept, because you had already accepted it!")
+        elif FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='D').exists():
+        # Check if the request has already been declined
+            return Response("Unable to accept, because you had already declined it!")
+        elif FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='R').exists():
+        # If request exists and status is Requested, then able to accept:
+            FriendRequest.objects.update(from_user=request_from_user_id, to_user=current_user_id, status='A')
+            return Response("Successfully accept the friend request!")
+        else:
+            return Response("Unable to accept because this request does not exist.")
+        
+    def decline_incoming_request(self, request, *args, **kwargs):
+    # decline incoming friend request
+        request_from_user_id = Author.objects.get(id=request.data["from_user"])
+        current_user_id = Author.objects.get(id=request.data["to_user"])
+        if FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='A').exists():
+        # Check if the request has already been accepted
+            return Response("Unable to decline because you had already accepted it!")
+        elif FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='D').exists():
+        # Check if the request has already been delined
+            return Response("Unable to decline because you had already declined it!")
+        elif FriendRequest.objects.filter(from_user=request_from_user_id, to_user=current_user_id, status='R').exists():
+        # Successfully decline this friend request
+            FriendRequest.objects.update(from_user=request_from_user_id, to_user=current_user_id, status='D')
+            return Response("Successfully decline this friend request!")
+        else:
+        # Request does not exist
+            return Response("Unable to decline because this request does not exist.")
+    
+    def delete(self, request, *args, **kwargs):
+    # delete friend(only available when the status of request is 'Accepted')
+        user_1 = Author.objects.get(id=request.data["from_user"])
+        user_2 = Author.objects.get(id=request.data["to_user"])
+        if FriendRequest.objects.filter(from_user=user_1, to_user=user_2, status='A').exists():
+        # user1 create the friend request and user1 delete 
+            FriendRequest.objects.filter(from_user=user_1, to_user=user_2, status='A').delete()
+            return Response("Successfully delete this friend!")
+        elif FriendRequest.objects.filter(from_user=user_2, to_user=user_1, status='A').exists():
+        # user2 create the friend request and userr1 delete
+            FriendRequest.objects.filter(from_user=user_2, to_user=user_1, status='A').delete()
+            return Response("Successfully delete this friend!")
+        else:
+            return Response("Unable to delete because you are not friends.")
 
-def accept_request(request, requestID):
-    friend_request = FriendRequest.objects.get(id=requestID)
-    if friend_request.to_user == request.user:
-        friend_request.to_user.friends.add(friend_request.from_user)
-        friend_request.from_user.friends.add(friend_request.to_user)
-        friend_request.delete()
-        return HttpResponse('Friend request accepted.')
+    

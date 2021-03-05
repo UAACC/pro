@@ -61,13 +61,21 @@ class UpdateSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'published','image','status']
 
 
+# Friend Request V1: create_request & accept_request
 
+# class FriendRequestSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = FriendRequest
+#         fields = ('id', 'to_user', 'from_user')
+
+
+# Friend Request V2: create_request & accept_request
 
 class FriendRequestSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = FriendRequest
-        fields = ('id', 'to_user', 'from_user')
+        fields = ['from_user', 'to_user', 'status']
 
 
 class AuthorSerializer(serializers.ModelSerializer):

@@ -31,6 +31,7 @@ class Post(models.Model):
     published = models.DateTimeField(default=timezone.now)
     
     # image = models.ImageField(null = True, blank = True, upload_to= "images/")
+
     status = models.CharField(max_length = 10, choices = options, default = 'published')
 
     objects= models.Manager()#defaut
@@ -53,6 +54,19 @@ class Like(models.Model):
     published = models.DateTimeField(default=timezone.now)
 
 
+# Friend Request V1: create_request & accept_request
+
+# class FriendRequest(models.Model):
+#     from_user = models.ForeignKey(Author, related_name='from_user', on_delete=models.CASCADE)
+#     to_user = models.ForeignKey(Author, related_name='to_user', on_delete=models.CASCADE)
+
+
+# Friend Request V2:
 class FriendRequest(models.Model):
+    class Meta:
+        unique_together = (("from_user", "to_user"),)
+
+    Friendship_status = (("R", "Requested"), ("A", "Accepted"), ("D", "Declined"))
     from_user = models.ForeignKey(Author, related_name='from_user', on_delete=models.CASCADE)
     to_user = models.ForeignKey(Author, related_name='to_user', on_delete=models.CASCADE)
+    status = models.CharField(choices=Friendship_status, default= "Requested", max_length= 1)
