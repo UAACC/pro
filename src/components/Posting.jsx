@@ -17,7 +17,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { requirePropFactory } from "@material-ui/core";
+import { CardActionArea, requirePropFactory } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +66,12 @@ export default function RecipeReviewCard(props) {
         title={props.post.title}
         subheader={props.post.published}
       />
+      {/* <CardMedia
+        className={classes.media}
+        image="http://www.xinhuanet.com/ent/2018-11/29/1123782546_15434527871911n.jpg"
+        title="Paella dish"
+      /> */}
+      <CardActionArea onClick = {()=> props.handleClick()}>
       <CardMedia
         className={classes.media}
         image="http://www.xinhuanet.com/ent/2018-11/29/1123782546_15434527871911n.jpg"
@@ -76,6 +82,13 @@ export default function RecipeReviewCard(props) {
           {props.post.description}
         </Typography>
       </CardContent>
+      </CardActionArea>
+      {/* <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {props.post.description}
+        </Typography>
+      </CardContent> */}
+
       <CardActions disableSpacing>
         <IconButton aria-label="like">
           <FavoriteIcon />

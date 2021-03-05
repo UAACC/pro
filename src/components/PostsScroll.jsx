@@ -22,37 +22,33 @@ class PostsScroll extends React.Component {
   };
 
   render() {
-    console.log("---inside render");
     const { posts } = this.state;
     console.log(posts);
     return (
       <div style={{ marginLeft: "10%", marginRight: "10%", marginTop: "30px" }}>
-        <Grid
-          container
-          direction="horizenol"
-          justify="center"
-          alignItems="flex-start"
-        >
-          {posts.length !== 0 ? (
-            posts.map((post) => (
-              <Grid item xs={9}>
-                <Paper style={{ overflow: "auto" }}>
-                  <Posting post={post}></Posting>
-                </Paper>
-              </Grid>
-            ))
-          ) : (
-            <center>
-              <HourglassEmptyIcon
-                fontSize="large"
-                style={{ marginTop: 20 }}
-              ></HourglassEmptyIcon>
-              <Typography variant="h3" style={{ marginLeft: 20 }}>
-                processing ...
-              </Typography>
-            </center>
-          )}
-        </Grid>
+        {posts.length !== 0 ? (
+          posts.map((post) => (
+            <Grid item xs={6}>
+              <Paper style={{ overflow: "auto" }}>
+                <Posting
+                  post={post}
+                  handleClick={() => (window.location = "/posts/" + post.id)}
+                ></Posting>
+              </Paper>
+            </Grid>
+          ))
+        ) : (
+          <center>
+            <HourglassEmptyIcon
+              fontSize="large"
+              style={{ marginTop: 20 }}
+            ></HourglassEmptyIcon>
+            <Typography variant="h3" style={{ marginLeft: 20 }}>
+              processing ...
+            </Typography>
+          </center>
+        )}
+        <Grid item xs={3}></Grid>
       </div>
     );
   }
