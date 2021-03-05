@@ -4,38 +4,37 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "../redux/user/useractions";
 
 class Header extends React.Component {
-
   handleLogOut = () => {
-    this.props.setCurrentUser(false)
-  }
+    this.props.setCurrentUser(false);
+  };
 
   renderHeader = () => {
     const { currentUser } = this.props;
-    switch(currentUser){
+    switch (currentUser) {
       case null:
-        return null
+        return null;
       case false:
-        return <li className="nav-item">
-        <a
-          className="nav-link active"
-          aria-current="page"
-          href="/signin"
-        >
-          sign in
-        </a>
-      </li>
+        return (
+          <li className="nav-item">
+            <a className="nav-link active" aria-current="page" href="/signin">
+              sign in
+            </a>
+          </li>
+        );
       default:
-        return <li className="nav-item">
-          <a
-            className="nav-link active"
-            aria-current="page"
-            onClick={this.handleLogOut}
-          >
-            log out
-          </a>
-        </li>
+        return (
+          <li className="nav-item">
+            <a
+              className="nav-link active"
+              aria-current="page"
+              onClick={this.handleLogOut}
+            >
+              log out
+            </a>
+          </li>
+        );
     }
-  }
+  };
 
   render() {
     return (
@@ -66,7 +65,7 @@ class Header extends React.Component {
                 <a
                   className="nav-link active"
                   aria-current="/post/create"
-                  href="/editpost"
+                  href="/newpost"
                 >
                   create post
                 </a>

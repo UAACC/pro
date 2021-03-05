@@ -27,16 +27,16 @@ class Editpost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        autherID: "",
-        title: "",
-        description: "",
-        published: "",
-        format: "",
-        image: "",
-        status: "",
+      autherID: "",
+      title: "",
+      description: "",
+      published: "",
+      category: "",
+      format: "",
+      image: "",
+      status: "",
     };
   }
-
 
   handleSubmit = (event) => {
     const { token } = this.props.currentUser;
@@ -45,7 +45,7 @@ class Editpost extends React.Component {
     fetch(url, {
       method: "POST",
       headers: {
-        "Authorization": `Token ${token}`,
+        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
       body: JSON.stringify(this.state),
@@ -56,7 +56,7 @@ class Editpost extends React.Component {
       .catch(function (error) {
         console.log("error", error);
       });
-  }
+  };
 
   render() {
     return (
@@ -77,7 +77,26 @@ class Editpost extends React.Component {
                 <Paper style={{ height: "710px" }}>
                   <div>
                     <TextField
-                      onChange={(e) => {this.setState({description: e.target.value})}}
+                      onChange={(e) => {
+                        this.setState({ title: e.target.value });
+                      }}
+                      id="title"
+                      name="title"
+                      style={{
+                        marginLeft: "3%",
+                        marginRight: "3%",
+                        marginTop: "3%",
+                        width: "94%",
+                      }}
+                      label="Post title"
+                      multiline
+                      rows={1}
+                      variant="outlined"
+                    ></TextField>
+                    <TextField
+                      onChange={(e) => {
+                        this.setState({ description: e.target.value });
+                      }}
                       id="description"
                       name="description"
                       style={{
@@ -91,6 +110,20 @@ class Editpost extends React.Component {
                       rows={6}
                       variant="outlined"
                     ></TextField>
+                    <TextField
+                      onChange={(e) => {
+                        this.setState({ category: e.target.value });
+                      }}
+                      style={{
+                        marginLeft: "3%",
+                        marginRight: "3%",
+                        marginTop: "3%",
+                        width: "94%",
+                      }}
+                      id="category"
+                      label="category"
+                      variant="filled"
+                    />
                     {/*
                   <ChipInput
                     style={{
@@ -157,7 +190,9 @@ class Editpost extends React.Component {
                         marginTop: "3%",
                         width: "94%",
                       }}
-                      onChange={(e) => {this.setState({format: e.target.value})}}
+                      onChange={(e) => {
+                        this.setState({ format: e.target.value });
+                      }}
                     >
                       <FormLabel component="legend">Format</FormLabel>
                       <RadioGroup row aria-label="visible" name="visible">
@@ -186,16 +221,6 @@ class Editpost extends React.Component {
                     >
                       Upload Image
                     </Button>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      style={{
-                        marginLeft: "3%",
-                        marginTop: "3%",
-                      }}
-                    >
-                      Preview
-                    </Button>
                   </div>
                   <div>
                     <Button
@@ -207,7 +232,7 @@ class Editpost extends React.Component {
                         marginTop: "3%",
                       }}
                     >
-                      Submit
+                      Update
                     </Button>
                   </div>
                 </Paper>
