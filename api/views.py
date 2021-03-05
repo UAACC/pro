@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import AllowAny, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 from .serializers import AuthorSerializer, PostSerializer, CommentSerializer, LikeSerializer,UpdateSerializer,PostCreateSerializer,CategorySerializer
 from .models import Author, Post, Category
@@ -60,7 +60,7 @@ class PostList(generics.ListAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated, )
     
     def create(self, serializer):
         print(self.request.user, '!!!!!!!!!!')
@@ -81,7 +81,7 @@ class UpdatePost(generics.RetrieveUpdateDestroyAPIView):
 class DeletePost(generics.DestroyAPIView):
     queryset = Post.postobjects.all()
     serializer_class = PostSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated, )
     
 
 class CategoryList(generics.ListCreateAPIView):
