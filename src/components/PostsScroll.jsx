@@ -33,7 +33,7 @@ class PostsScroll extends React.Component {
           posts.map((post)=>(
             <Grid item xs={6}>
               <Paper style={{  overflow: "auto" }}>
-              <Posting post = {post}></Posting>
+              <Posting post = {post} handleClick = {() => window.location="/posts/"+post.id}></Posting>
               </Paper> 
             </Grid>
           ))
